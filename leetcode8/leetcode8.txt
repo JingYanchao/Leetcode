@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <string>
+#include <limits.h>
+using namespace std;
+
+class Solution 
+{
+public:
+	enum stat 
+	{
+		START = 1,
+		WAIT_NUM,
+	};
+	int myAtoi(string str) 
+	{
+		int slen = str.size();
+		if(slen == 0)
+			return 0;
+		int i=0;
+		int res = 0;
+		int flag = 1;
+		int stats;
+		stats = START;
+		while(i<slen)
+		{
+			if(str[i]==' ')
+			{
+				if(stats == START)
+				{
+					i++;
+					continue;
+				}
+				else
+				{
+					break;
+				}
+			}
+			else if(str[i] == '+')
+			{
+				if(stats == START)
+				{
+					flag = 1;
+					stats = WAIT_NUM;
+				}
+				else
+				{
+					break;
+				}
+			}
+			else if(str[i] == '-')
+			{
+				if(stats == START)
+				{
+					flag = -1;
+					stats = WAIT_NUM;
+				}
+				else
+				{
+					break;
+				}
+
+			}
+			else if(str[i]<='9'&&str[i]>='0')
+			{
+				int temp = INT_MAX-res*10;
+				
+				if(res >214748364 || temp<str[i]-48 )
+				{
+					if(flag == -1)
+					{
+						res = INT_MIN;
+					}
+					else
+					{
+						res = INT_MAX;
+
+					}
+					break;
+				}
+				res = res*10+str[i] - 48;
+				stats = WAIT_NUM;
+			}
+			else
+			{
+				break;
+			}
+			i++;
+
+		}
+		return flag*res;
+	}
+};
+
+int main()
+{
+	string jing = "-11919730356x";
+	int res = Solution().myAtoi(jing);
+	printf("%d",res);
+	getchar();
+	getchar();
+
+}
